@@ -4,6 +4,7 @@ type Employee struct {
 	Id             int    `json:"id"`
 	Status         string `json:"status"`
 	DepartmentCode int    `json:"department_code"`
+	Department     string `json:"department"`
 	DateIn         string `json:"date_in"`
 	DateOut        string `json:"date_out"`
 	Username       string `json:"username"`

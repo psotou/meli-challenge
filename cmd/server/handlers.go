@@ -9,17 +9,15 @@ import (
 
 func getEmployee(c echo.Context) error {
 	var emp Employee
-	var employees []Employee
-
-	rows, _ := db.Query("SELECT id, status, department_code, date_in, coalesce(date_out, ''), username FROM pasidb.employee")
-	defer rows.Close()
-	for rows.Next() {
-		rows.Scan(&emp.Id, &emp.Status, &emp.DepartmentCode, &emp.DateIn, &emp.DateOut, &emp.Username)
-
-		employees = append(employees, emp)
+	sql := `SELECT id, status, department, department_code, date_in, coalesce(date_out, ''), username
+    FROM pasidb.employee
+    WHERE username = ?`
+	row := db.QueryRow(sql, c.Param("username"))
+	if err := row.Scan(&emp.Id, &emp.Status, &emp.Username, &emp.DepartmentCode, &emp.Department, &emp.DateIn, &emp.DateOut); err != nil {
+		return err
 	}
 
-	return c.JSON(http.StatusCreated, employees)
+	return c.JSON(http.StatusOK, emp)
 }
 
 func createEmployee(c echo.Context) error {
@@ -28,9 +26,9 @@ func createEmployee(c echo.Context) error {
 		return err
 	}
 
-	sql := `INSERT INTO pasidb.employee (status, department_code, date_in, username, inserted_at, updated_at) 
-    VALUES ('Active', ?, ?, ?, NOW(), NOW())`
-	inserted, _ := db.Exec(sql, emp.DepartmentCode, emp.DateIn, emp.Username)
+	sql := `INSERT INTO pasidb.employee (status, department, department_code, date_in, username, inserted_at, updated_at) 
+    VALUES ('Active', ?, ?, ?, ?, NOW(), NOW())`
+	inserted, _ := db.Exec(sql, emp.Department, emp.DepartmentCode, emp.DateIn, emp.Username)
 	rowsAffected, err := inserted.RowsAffected()
 	if err != nil {
 		return err

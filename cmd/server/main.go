@@ -30,12 +30,15 @@ func main() {
 
 	defer db.Close()
 
-	e.GET("/", getEmployee)
+	e.GET("/employee/:username", getEmployee)
 	e.POST("/employee", createEmployee)
 	e.PUT("/employee/:username", updateEmployee)
 	e.POST("/role", createRole)
 	e.POST("/application", createApplication)
 	e.POST("/dbaccess", createDbAccess)
+
+	// e.GET("/employee_risk", getEmployeeRisk)
+	// e.GET("/department_risk", getDepartmentRisk)
 
 	server := &http.Server{
 		Addr:         ":8080",
