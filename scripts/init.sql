@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS employee (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
     , status VARCHAR(255)
     , department_code INT
+    , department VARCHAR(255)
     , date_in DATE
     , date_out DATE
     , username VARCHAR(255)
@@ -45,7 +46,7 @@ LOAD DATA INFILE '/var/lib/mysql-files/seed/employee.csv'
 INTO TABLE pasidb.employee
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
-(status, department_code, @datein, @dateout, username, @insertedat, @updatedat)
+(status, department_code, department, @datein, @dateout, username, @insertedat, @updatedat)
 SET date_in = STR_TO_DATE(@datein, '%d/%m/%Y')
     , date_out = STR_TO_DATE(NULLIF(@dateout, 'None'), '%d/%m/%Y')
     , inserted_at = NOW()

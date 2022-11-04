@@ -23,6 +23,7 @@ const (
 type Employee struct {
 	Status         string `json:"status"`
 	DepartmentCode int    `json:"department_code"`
+	Department     string `json:"department"`
 	DateIn         string `json:"date_in"`
 	DateOut        string `json:"date_out"`
 	Username       string `json:"username"`
@@ -102,8 +103,8 @@ func csvWriter(records interface{}) error {
 		w = csv.NewWriter(file)
 		for _, r := range records.([]Employee) {
 			// the order in the mysql table is as follows:
-			// status, department_code, date_in, date_out, username
-			row := []string{r.Status, fmt.Sprint(r.DepartmentCode), r.DateIn, r.DateOut, r.Username}
+			// status, department_code, department, date_in, date_out, username
+			row := []string{r.Status, fmt.Sprint(r.DepartmentCode), r.Department, r.DateIn, r.DateOut, r.Username}
 			data = append(data, row)
 		}
 	case []Role:
