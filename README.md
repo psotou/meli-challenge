@@ -84,3 +84,11 @@ Este request debería devolver un status code 201. Para ver si el dato se creó,
 
 En adelante voy  a trabajar sobre dos ramas; `main` que es donde pretendo tener el proyecto final, y `wip`, que es la rama con la data más actualizada dado que es ahí donde iré agregando y probando cosas.
 
+
+#### Pendientes 
+
+Además de los dos objetivos restantes, hay algunos pendientes que iré agregando cuando ya tengo todo semi listo (espero).
+
+- [ ] tests unitarios.
+- [ ] test funcional (?).
+- [ ] mejorar definición de tablas en BD.
