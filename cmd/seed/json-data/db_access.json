@@ -1,0 +1,127 @@
+[
+  {
+    "username": "jenniferwilson",
+    "table": "CUSTOMERS",
+    "is_pii": 1
+  },
+  {
+    "username": "isaiahking",
+    "table": "CUSTOMERS",
+    "is_pii": 1
+  },
+  {
+    "username": "tarafrazier",
+    "table": "CUSTOMERS",
+    "is_pii": 1
+  },
+  {
+    "username": "timbrown",
+    "table": "CUSTOMERS",
+    "is_pii": 1
+  },
+  {
+    "username": "adriennegallagher",
+    "table": "CUSTOMERS",
+    "is_pii": 1
+  },
+  {
+    "username": "anawatson",
+    "table": "CONFIG",
+    "is_pii": 0
+  },
+  {
+    "username": "timbrown",
+    "table": "CONFIG",
+    "is_pii": 0
+  },
+  {
+    "username": "adriennegallagher",
+    "table": "CONFIG",
+    "is_pii": 0
+  },
+  {
+    "username": "elizabethevans",
+    "table": "CONFIG",
+    "is_pii": 0
+  },
+  {
+    "username": "michaelguerra",
+    "table": "CONFIG",
+    "is_pii": 0
+  },
+  {
+    "username": "jenniferwilson",
+    "table": "TRADE_LOG",
+    "is_pii": 1
+  },
+  {
+    "username": "isaiahking",
+    "table": "TRADE_LOG",
+    "is_pii": 1
+  },
+  {
+    "username": "adriennegallagher",
+    "table": "PARAMETERS",
+    "is_pii": 0
+  },
+  {
+    "username": "elizabethevans",
+    "table": "PARAMETERS",
+    "is_pii": 0
+  },
+  {
+    "username": "michaelguerra",
+    "table": "PARAMETERS",
+    "is_pii": 0
+  },
+  {
+    "username": "robertbailey",
+    "table": "PARAMETERS",
+    "is_pii": 0
+  },
+  {
+    "username": "timbrown",
+    "table": "TRANSACTION",
+    "is_pii": 1
+  },
+  {
+    "username": "adriennegallagher",
+    "table": "TRANSACTION",
+    "is_pii": 1
+  },
+  {
+    "username": "elizabethevans",
+    "table": "TRANSACTION",
+    "is_pii": 1
+  },
+  {
+    "username": "lauriehart",
+    "table": "PRIORITY",
+    "is_pii": 0
+  },
+  {
+    "username": "josephmiller",
+    "table": "PRIORITY",
+    "is_pii": 0
+  },
+  {
+    "username": "johnnylam",
+    "table": "PRIORITY",
+    "is_pii": 0
+  },
+  {
+    "username": "michaelchavez",
+    "table": "USERS",
+    "is_pii": 1
+  },
+  {
+    "username": "jenniferwilson",
+    "table": "USERS",
+    "is_pii": 1
+  },
+  {
+    "username": "isaiahking",
+    "table": "USERS",
+    "is_pii": 1
+  }
+]

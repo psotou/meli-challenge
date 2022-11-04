@@ -1,0 +1,56 @@
+[
+  {
+    "app_id": 905,
+    "app_name": "sale_center",
+    "role_id": 344,
+    "is_critical": 1
+  },
+  {
+    "app_id": 905,
+    "app_name": "sale_center",
+    "role_id": 543,
+    "is_critical": 1
+  },
+  {
+    "app_id": 905,
+    "app_name": "sale_center",
+    "role_id": 778,
+    "is_critical": 1
+  },
+  {
+    "app_id": 594,
+    "app_name": "customer_support",
+    "role_id": 437,
+    "is_critical": 1
+  },
+  {
+    "app_id": 594,
+    "app_name": "customer_support",
+    "role_id": 576,
+    "is_critical": 1
+  },
+  {
+    "app_id": 594,
+    "app_name": "customer_support",
+    "role_id": 897,
+    "is_critical": 1
+  },
+  {
+    "app_id": 845,
+    "app_name": "prototype",
+    "role_id": 332,
+    "is_critical": 0
+  },
+  {
+    "app_id": 845,
+    "app_name": "prototype",
+    "role_id": 334,
+    "is_critical": 0
+  },
+  {
+    "app_id": 845,
+    "app_name": "prototype",
+    "role_id": 331,
+    "is_critical": 0
+  }
+]

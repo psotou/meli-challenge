@@ -1,0 +1,72 @@
+[
+  {
+    "role_id": 344,
+    "role_name": "ADMIN",
+    "username": "jenniferwilson"
+  },
+  {
+    "role_id": 543,
+    "role_name": "READER",
+    "username": "isaiahking"
+  },
+  {
+    "role_id": 543,
+    "role_name": "READER",
+    "username": "tarafrazier"
+  },
+  {
+    "role_id": 778,
+    "role_name": "OPERATOR",
+    "username": "anawatson"
+  },
+  {
+    "role_id": 437,
+    "role_name": "ADMIN_SU",
+    "username": "andreamason"
+  },
+  {
+    "role_id": 576,
+    "role_name": "READER_CS",
+    "username": "rickeyguerrero"
+  },
+  {
+    "role_id": 897,
+    "role_name": "WRITER_CS",
+    "username": "josephmiller"
+  },
+  {
+    "role_id": 897,
+    "role_name": "WRITER_CS",
+    "username": "melaniemurray"
+  },
+  {
+    "role_id": 897,
+    "role_name": "WRITER_CS",
+    "username": "juliemartin"
+  },
+  {
+    "role_id": 897,
+    "role_name": "WRITER_CS",
+    "username": "adriennegallagher"
+  },
+  {
+    "role_id": 332,
+    "role_name": "ADMIN",
+    "username": "adriennegallagher"
+  },
+  {
+    "role_id": 334,
+    "role_name": "USER_READ",
+    "username": "johnnylam"
+  },
+  {
+    "role_id": 334,
+    "role_name": "USER_READ",
+    "username": "michaelguerra"
+  },
+  {
+    "role_id": 331,
+    "role_name": "CONSULTANT",
+    "username": "isaiahking"
+  }
+]
