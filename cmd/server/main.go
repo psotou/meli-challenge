@@ -31,11 +31,12 @@ func main() {
 	defer db.Close()
 
 	e.GET("/employee/:username", getEmployee)
-	e.POST("/employee", createEmployee)
-	e.PUT("/employee/:username", updateEmployee)
-	e.POST("/role", createRole)
-	e.POST("/application", createApplication)
-	e.POST("/dbaccess", createDbAccess)
+	e.POST("/employees", createEmployees)
+	// e.PUT("/employee/:username", updateEmployee)
+	e.PUT("/employees", updateEmployees)
+	e.POST("/roles", createRoles)
+	e.POST("/applications", createApplications)
+	e.POST("/dbaccesses", createDbAccesses)
 
 	// e.GET("/employee_risk", getEmployeeRisk)
 	// e.GET("/department_risk", getDepartmentRisk)

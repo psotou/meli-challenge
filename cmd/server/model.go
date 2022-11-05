@@ -1,5 +1,12 @@
 package main
 
+// FullName       string `json:"full_name"`
+// DivCode        int    `json:"div_code"`
+// Division       string `json:"division"`
+// CountryId      int    `json:"country_id"`
+// Country        string `json:"country"`
+// Email          string `json:"email"`
+
 type Employee struct {
 	Id             int    `json:"id"`
 	Status         string `json:"status"`

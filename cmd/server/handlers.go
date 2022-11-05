@@ -13,97 +13,122 @@ func getEmployee(c echo.Context) error {
     FROM pasidb.employee
     WHERE username = ?`
 	row := db.QueryRow(sql, c.Param("username"))
-	if err := row.Scan(&emp.Id, &emp.Status, &emp.Username, &emp.DepartmentCode, &emp.Department, &emp.DateIn, &emp.DateOut); err != nil {
+	if err := row.Scan(&emp.Id, &emp.Status, &emp.Department, &emp.DepartmentCode, &emp.DateIn, &emp.DateOut, &emp.Username); err != nil {
 		return err
 	}
 
 	return c.JSON(http.StatusOK, emp)
 }
 
-func createEmployee(c echo.Context) error {
-	var emp Employee
-	if err := c.Bind(&emp); err != nil {
+func createEmployees(c echo.Context) error {
+	var emps []Employee
+	var count int64
+	if err := c.Bind(&emps); err != nil {
 		return err
 	}
 
 	sql := `INSERT INTO pasidb.employee (status, department, department_code, date_in, username, inserted_at, updated_at) 
-    VALUES ('Active', ?, ?, ?, ?, NOW(), NOW())`
-	inserted, _ := db.Exec(sql, emp.Department, emp.DepartmentCode, emp.DateIn, emp.Username)
-	rowsAffected, err := inserted.RowsAffected()
-	if err != nil {
-		return err
-	}
-	log.Printf("rows afftected: %v", rowsAffected)
+    VALUES (?, ?, ?, ?, ?, NOW(), NOW())`
 
-	return c.JSON(http.StatusCreated, emp)
+	for _, emp := range emps {
+		inserted, _ := db.Exec(sql, emp.Status, emp.Department, emp.DepartmentCode, emp.DateIn, emp.Username)
+		rowsAffected, err := inserted.RowsAffected()
+		if err != nil {
+			return err
+		}
+		count += rowsAffected
+	}
+	log.Printf("rows afftected: %v", count)
+
+	return c.JSON(http.StatusCreated, emps)
 }
 
-func updateEmployee(c echo.Context) error {
-	var emp Employee
-	if err := c.Bind(&emp); err != nil {
+func updateEmployees(c echo.Context) error {
+	var emps []Employee
+	var count int64
+	if err := c.Bind(&emps); err != nil {
 		return err
 	}
 
 	sql := `UPDATE pasidb.employee
     SET status = ?, date_out = ?, updated_at = NOW()
     WHERE username = ?`
-	updated, _ := db.Exec(sql, emp.Status, emp.DateOut, c.Param("username"))
-	rowsAffected, err := updated.RowsAffected()
-	if err != nil {
-		return err
-	}
-	log.Printf("rows afftected: %v\n", rowsAffected)
 
-	return c.JSON(http.StatusCreated, emp)
+	for _, emp := range emps {
+		updated, _ := db.Exec(sql, emp.Status, emp.DateOut, emp.Username)
+		rowsAffected, err := updated.RowsAffected()
+		if err != nil {
+			return err
+		}
+		count += rowsAffected
+	}
+	log.Printf("rows afftected: %v\n", count)
+
+	return c.JSON(http.StatusCreated, emps)
 }
 
-func createRole(c echo.Context) error {
-	var role Role
-	if err := c.Bind(&role); err != nil {
+func createRoles(c echo.Context) error {
+	var roles []Role
+	var count int64
+	if err := c.Bind(&roles); err != nil {
 		return err
 	}
 	sql := `INSERT INTO pasidb.role (role_id, role_name, username, inserted_at, updated_at)
     VALUES (?, ?, ?, NOW(), NOW())`
-	inserted, _ := db.Exec(sql, role.RoleId, role.RoleName, role.Username)
-	rowsAffected, err := inserted.RowsAffected()
-	if err != nil {
-		return err
-	}
-	log.Printf("rows afftected: %v\n", rowsAffected)
 
-	return c.JSON(http.StatusCreated, role)
+	for _, role := range roles {
+		inserted, _ := db.Exec(sql, role.RoleId, role.RoleName, role.Username)
+		rowsAffected, err := inserted.RowsAffected()
+		if err != nil {
+			return err
+		}
+		count += rowsAffected
+	}
+	log.Printf("rows afftected: %v\n", count)
+
+	return c.JSON(http.StatusCreated, roles)
 }
 
-func createApplication(c echo.Context) error {
-	var app Application
-	if err := c.Bind(&app); err != nil {
+func createApplications(c echo.Context) error {
+	var apps []Application
+	var count int64
+	if err := c.Bind(&apps); err != nil {
 		return err
 	}
 	sql := `INSERT INTO pasidb.application (app_id, app_name, role_id, is_critical, inserted_at, updated_at)
     VALUES (?, ?, ?, ?, NOW(), NOW())`
-	inserted, _ := db.Exec(sql, app.AppId, app.AppName, app.RoleId, app.IsCritical)
-	rowsAffected, err := inserted.RowsAffected()
-	if err != nil {
-		return err
-	}
-	log.Printf("rows afftected: %v\n", rowsAffected)
 
-	return c.JSON(http.StatusCreated, app)
+	for _, app := range apps {
+		inserted, _ := db.Exec(sql, app.AppId, app.AppName, app.RoleId, app.IsCritical)
+		rowsAffected, err := inserted.RowsAffected()
+		if err != nil {
+			return err
+		}
+		count += rowsAffected
+	}
+	log.Printf("rows afftected: %v\n", count)
+
+	return c.JSON(http.StatusCreated, apps)
 }
 
-func createDbAccess(c echo.Context) error {
-	var dbaccess DBAccess
-	if err := c.Bind(&dbaccess); err != nil {
+func createDbAccesses(c echo.Context) error {
+	var dbaccesses []DBAccess
+	var count int64
+	if err := c.Bind(&dbaccesses); err != nil {
 		return err
 	}
 	sql := "INSERT INTO pasidb.db_access (username, `table`, is_pii, inserted_at, updated_at) " +
 		"VALUES (?, ?, ?, NOW(), NOW())"
-	inserted, _ := db.Exec(sql, dbaccess.Username, dbaccess.Table, dbaccess.IsPII)
-	rowsAffected, err := inserted.RowsAffected()
-	if err != nil {
-		return err
-	}
-	log.Printf("rows afftected: %v\n", rowsAffected)
 
-	return c.JSON(http.StatusCreated, dbaccess)
+	for _, dbaccess := range dbaccesses {
+		inserted, _ := db.Exec(sql, dbaccess.Username, dbaccess.Table, dbaccess.IsPII)
+		rowsAffected, err := inserted.RowsAffected()
+		if err != nil {
+			return err
+		}
+		count += rowsAffected
+	}
+	log.Printf("rows afftected: %v\n", count)
+
+	return c.JSON(http.StatusCreated, dbaccesses)
 }
