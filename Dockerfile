@@ -19,7 +19,6 @@ FROM gcr.io/distroless/base-debian10 AS deployer
 WORKDIR /
 
 COPY --from=builder /challenge-meli .
-# COPY --from=builder ./challenge-meli /challenge-meli
 
 EXPOSE 8080
 

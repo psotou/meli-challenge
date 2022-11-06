@@ -7,8 +7,6 @@ CREATE TABLE IF NOT EXISTS employee (
     , department VARCHAR(255)
     , date_in VARCHAR(255)
     , date_out VARCHAR(255)
-    /* , date_in DATE */
-    /* , date_out DATE */
     , username VARCHAR(255)
     , inserted_at DATETIME
     , updated_at DATETIME
@@ -42,45 +40,6 @@ CREATE TABLE IF NOT EXISTS db_access (
     , inserted_at DATETIME
     , updated_at DATETIME
 );
-
--- DEPRACTED in favor of seeding or loading data through an endpoint
--- Load data from csv
-
-/*
-LOAD DATA INFILE '/var/lib/mysql-files/seed/employee.csv'
-INTO TABLE pasidb.employee
-FIELDS TERMINATED BY ','
-LINES TERMINATED BY '\n'
-(status, department_code, department, @datein, @dateout, username, @insertedat, @updatedat)
-SET date_in = STR_TO_DATE(@datein, '%d/%m/%Y')
-    , date_out = STR_TO_DATE(NULLIF(@dateout, 'None'), '%d/%m/%Y')
-    , inserted_at = NOW()
-    , updated_at = NOW();
-
-LOAD DATA INFILE '/var/lib/mysql-files/seed/role.csv'
-INTO TABLE pasidb.role
-FIELDS TERMINATED BY ','
-LINES TERMINATED BY '\n'
-(role_id, role_name, username, @insertedat, @updatedat)
-SET inserted_at = NOW()
-    , updated_at = NOW();
-
-LOAD DATA INFILE '/var/lib/mysql-files/seed/application.csv'
-INTO TABLE pasidb.application
-FIELDS TERMINATED BY ','
-LINES TERMINATED BY '\n'
-(app_id, app_name, role_id, is_critical, @insertedat, @updatedat)
-SET inserted_at = NOW()
-    , updated_at = NOW();
-
-LOAD DATA INFILE '/var/lib/mysql-files/seed/db_access.csv'
-INTO TABLE pasidb.db_access
-FIELDS TERMINATED BY ','
-LINES TERMINATED BY '\n'
-(username, `table`, is_pii, @insertedat, @updatedat)
-SET inserted_at = NOW()
-    , updated_at = NOW();
-*/
 
 -- Business logic
 CREATE OR REPLACE VIEW risk_view AS

@@ -6,10 +6,7 @@ services:
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      # - MYSQL_USER=${MYSQL_USER}
-      # - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
-      # - MYSQL_HOST=${MYSQL_HOST}
     volumes:
       - ./scripts:/docker-entrypoint-initdb.d
       - ./cmd/seed/csv-data:/var/lib/mysql-files/seed
@@ -24,7 +21,6 @@ services:
     build:
       context: .
       target: deployer
-      # dockerfile: Dockerfile
     env_file:
       - .env
     depends_on:

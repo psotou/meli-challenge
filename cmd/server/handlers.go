@@ -7,19 +7,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func getEmployee(c echo.Context) error {
-	var emp Employee
-	sql := `SELECT id, status, department, department_code, date_in, coalesce(date_out, ''), username
-    FROM pasidb.employee
-    WHERE username = ?`
-	row := db.QueryRow(sql, c.Param("username"))
-	if err := row.Scan(&emp.Id, &emp.Status, &emp.Department, &emp.DepartmentCode, &emp.DateIn, &emp.DateOut, &emp.Username); err != nil {
-		return err
-	}
-
-	return c.JSON(http.StatusOK, emp)
-}
-
 func createEmployees(c echo.Context) error {
 	var emps []Employee
 	var count int64

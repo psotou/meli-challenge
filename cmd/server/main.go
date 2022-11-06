@@ -32,7 +32,6 @@ func main() {
 
 	e.GET("/employee/:username", getEmployee)
 	e.POST("/employees", createEmployees)
-	// e.PUT("/employee/:username", updateEmployee)
 	e.PUT("/employees", updateEmployees)
 	e.POST("/roles", createRoles)
 	e.POST("/applications", createApplications)
