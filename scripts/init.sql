@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS db_access (
     , updated_at DATETIME
 );
 
+-- DEPRACTED in favor of seeding or loading data through an endpoint
 -- Load data from csv
 
 /*
@@ -81,11 +82,12 @@ SET inserted_at = NOW()
     , updated_at = NOW();
 */
 
--- Create business logic
+-- Business logic
 CREATE OR REPLACE VIEW risk_view AS
 WITH cte AS (
     SELECT
         e.username 
+        , e.status
         , e.department 
         , e.department_code
         , da.`table`
@@ -111,53 +113,56 @@ WITH cte AS (
 )
 , agg_fields AS (
     SELECT
-        cte.*
+        *
+        , CASE
+            WHEN status = 'Inactive' THEN 0
+            WHEN status = 'Active' THEN (select table_risk + app_risk + role_risk)
+            END emp_risk
         , (select table_risk + app_risk) dept_risk
-        , (select table_risk + app_risk + role_risk) emp_risk
     FROM cte
 )
 , max_risk AS (
     SELECT 
-        af.*
-        , MAX(af.emp_risk) OVER(PARTITION BY af.username) employee_risk
-        , MAX(af.dept_risk) OVER(PARTITION BY af.department_code) department_risk
-    FROM agg_fields af 
+        *
+        , MAX(emp_risk) OVER(PARTITION BY username) employee_risk_code
+        , MAX(dept_risk) OVER(PARTITION BY department_code) department_risk_code
+    FROM agg_fields
 )
 SELECT
-    mr.username
-    , mr.department
-    , mr.department_code
-    , mr.employee_risk
-    , mr.department_risk
+    username
+    , department
+    , department_code
+    , employee_risk_code
+    , department_risk_code
     , CASE
-        WHEN employee_risk = 0 THEN 'no risk'
-        WHEN employee_risk IN (1, 2) THEN 'low'
-        WHEN employee_risk IN (3, 4) THEN 'mid'
-        WHEN employee_risk IN (5, 6) THEN 'high'
-        WHEN employee_risk = 7  THEN 'very high'
-        END employee_risk_desc
+        WHEN employee_risk_code = 0 THEN 'no risk'
+        WHEN employee_risk_code IN (1, 2) THEN 'low'
+        WHEN employee_risk_code IN (3, 4) THEN 'mid'
+        WHEN employee_risk_code IN (5, 6) THEN 'high'
+        WHEN employee_risk_code = 7  THEN 'very high'
+        END employee_risk
     , CASE
-        WHEN department_risk = 0 THEN 'no risk'
-        WHEN department_risk = 1 THEN 'low'
-        WHEN department_risk = 2 THEN 'mid'
-        WHEN department_risk = 3 THEN 'high'
-        END department_risk_desc
-FROM max_risk mr;
+        WHEN department_risk_code = 0 THEN 'no risk'
+        WHEN department_risk_code = 1 THEN 'low'
+        WHEN department_risk_code = 2 THEN 'mid'
+        WHEN department_risk_code = 3 THEN 'high'
+        END department_risk
+FROM max_risk;
 
 CREATE OR REPLACE VIEW employee_risk_view AS 
 SELECT 
     username
+    , employee_risk_code
     , employee_risk
-    , employee_risk_desc
 FROM risk_view
-GROUP BY username, employee_risk;
+GROUP BY username, employee_risk_code;
 
 CREATE OR REPLACE VIEW department_risk_view AS 
 SELECT 
     department
     , department_code
+    , department_risk_code
     , department_risk
-    , department_risk_desc
 FROM risk_view
-GROUP BY department, department_code, department_risk;
+GROUP BY department, department_code, department_risk_code;
 

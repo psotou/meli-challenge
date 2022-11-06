@@ -38,8 +38,8 @@ func main() {
 	e.POST("/applications", createApplications)
 	e.POST("/dbaccesses", createDbAccesses)
 
-	// e.GET("/employee_risk", getEmployeeRisk)
-	// e.GET("/department_risk", getDepartmentRisk)
+	e.GET("/employeerisk/:username", getEmployeeRisk)
+	e.GET("/departmentrisk/:departmentcode", getDepartmentRisk)
 
 	server := &http.Server{
 		Addr:         ":8080",

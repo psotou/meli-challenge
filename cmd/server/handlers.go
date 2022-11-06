@@ -132,3 +132,30 @@ func createDbAccesses(c echo.Context) error {
 
 	return c.JSON(http.StatusCreated, dbaccesses)
 }
+
+// business logic
+func getEmployeeRisk(c echo.Context) error {
+	var empRisk EmployeeRisk
+	sql := `SELECT username, employee_risk_code, employee_risk
+    FROM pasidb.employee_risk_view
+    WHERE username = ?`
+	row := db.QueryRow(sql, c.Param("username"))
+	if err := row.Scan(&empRisk.Username, &empRisk.EmployeeRiskCode, &empRisk.EmployeeRisk); err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, empRisk)
+}
+
+func getDepartmentRisk(c echo.Context) error {
+	var dpmtRisk DepartmentRisk
+	sql := `SELECT department_code, department, department_risk_code, department_risk
+    FROM pasidb.department_risk_view
+    WHERE department_code = ?`
+	row := db.QueryRow(sql, c.Param("departmentcode"))
+	if err := row.Scan(&dpmtRisk.DepartmentCode, &dpmtRisk.Department, &dpmtRisk.DepartmentRiskCode, &dpmtRisk.DepartmentRisk); err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, dpmtRisk)
+}

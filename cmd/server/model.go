@@ -35,3 +35,17 @@ type DBAccess struct {
 	Table    string `json:"table"`
 	IsPII    uint8  `json:"is_pii"`
 }
+
+// business logic
+type EmployeeRisk struct {
+	Username         string `json:"username"`
+	EmployeeRiskCode int    `json:"employee_risk_code"`
+	EmployeeRisk     string `json:"employee_risk"`
+}
+
+type DepartmentRisk struct {
+	DepartmentCode     int    `json:"department_code"`
+	Department         string `json:"deparment"`
+	DepartmentRiskCode int    `json:"department_risk_code"`
+	DepartmentRisk     string `json:"deparment_risk"`
+}
