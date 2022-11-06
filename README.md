@@ -103,9 +103,7 @@ Las decisiones para la ponderación de cada fuente de información se explicará
 
 Además de los dos objetivos restantes, hay algunos pendientes que iré agregando cuando ya tengo todo semi listo (espero).
 
-- [ ] tests unitarios.
-- [ ] test funcional (?).
-- [ ] mejorar definición de tablas en BD.
-- [ ] agregar endpoints para carga masiva de empleados, roles, app y acceso a la BD.
-- [ ] quita del scrip de inicialización de la BD la carga de datos desde archivos `.csv`.
-- [ ] generación endpoints de consulta de riesgo por empleado y departamento.
+- [ ] tests.
+- [x] agregar endpoints para carga masiva de empleados, roles, app y acceso a la BD.
+- [x] quita del scrip de inicialización de la BD la carga de datos desde archivos `.csv`.
+- [x] generación endpoints de consulta de riesgo por empleado y departamento.
