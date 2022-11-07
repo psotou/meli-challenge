@@ -13,8 +13,6 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-var db *sql.DB
-
 func main() {
 	var err error
 
@@ -23,22 +21,22 @@ func main() {
 	e.Use(middleware.Recover())
 
 	dsn := fmt.Sprintf("root:%s@tcp(mysqldb:3306)/%s", os.Getenv("MYSQL_ROOT_PASSWORD"), os.Getenv("MYSQL_DATABASE"))
-	db, err = sql.Open("mysql", dsn)
+	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	defer db.Close()
 
-	e.GET("/employee/:username", getEmployee)
-	e.POST("/employees", createEmployees)
-	e.PUT("/employees", updateEmployees)
-	e.POST("/roles", createRoles)
-	e.POST("/applications", createApplications)
-	e.POST("/dbaccesses", createDbAccesses)
+	h := NewHandler(NewRiskModel(db))
 
-	e.GET("/employeerisk/:username", getEmployeeRisk)
-	e.GET("/departmentrisk/:departmentcode", getDepartmentRisk)
+	e.POST("/employees", h.CreateEmployees)
+	e.PUT("/employees", h.UpdateEmployees)
+	e.POST("/roles", h.CreateRoles)
+	e.POST("/applications", h.CreateApplications)
+	e.POST("/dbaccesses", h.CreateDbAccesses)
+
+	e.GET("/employeerisk/:username", h.GetEmployeeRisk)
+	e.GET("/departmentrisk/:code", h.GetDepartmentRisk)
 
 	server := &http.Server{
 		Addr:         ":8080",

@@ -1,147 +1,77 @@
 package main
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 )
 
-func createEmployees(c echo.Context) error {
-	var emps []Employee
-	var count int64
-	if err := c.Bind(&emps); err != nil {
-		return err
-	}
-
-	sql := `INSERT INTO pasidb.employee (status, department, department_code, date_in, username, inserted_at, updated_at) 
-    VALUES (?, ?, ?, ?, ?, NOW(), NOW())`
-
-	for _, emp := range emps {
-		inserted, _ := db.Exec(sql, emp.Status, emp.Department, emp.DepartmentCode, emp.DateIn, emp.Username)
-		rowsAffected, err := inserted.RowsAffected()
-		if err != nil {
-			return err
-		}
-		count += rowsAffected
-	}
-	log.Printf("rows afftected: %v", count)
-
-	return c.JSON(http.StatusCreated, emps)
+type Handler struct {
+	RiskModel RiskModeler
 }
 
-func updateEmployees(c echo.Context) error {
-	var emps []Employee
-	var count int64
-	if err := c.Bind(&emps); err != nil {
-		return err
-	}
-
-	sql := `UPDATE pasidb.employee
-    SET status = ?, date_out = ?, updated_at = NOW()
-    WHERE username = ?`
-
-	for _, emp := range emps {
-		updated, _ := db.Exec(sql, emp.Status, emp.DateOut, emp.Username)
-		rowsAffected, err := updated.RowsAffected()
-		if err != nil {
-			return err
-		}
-		count += rowsAffected
-	}
-	log.Printf("rows afftected: %v\n", count)
-
-	return c.JSON(http.StatusCreated, emps)
+func NewHandler(riskmodel RiskModeler) *Handler {
+	return &Handler{riskmodel}
 }
 
-func createRoles(c echo.Context) error {
-	var roles []Role
-	var count int64
-	if err := c.Bind(&roles); err != nil {
-		return err
+func (h *Handler) CreateEmployees(c echo.Context) error {
+	employees, err := h.RiskModel.InsertEmployees(c)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	sql := `INSERT INTO pasidb.role (role_id, role_name, username, inserted_at, updated_at)
-    VALUES (?, ?, ?, NOW(), NOW())`
 
-	for _, role := range roles {
-		inserted, _ := db.Exec(sql, role.RoleId, role.RoleName, role.Username)
-		rowsAffected, err := inserted.RowsAffected()
-		if err != nil {
-			return err
-		}
-		count += rowsAffected
+	return c.JSON(http.StatusCreated, employees)
+}
+
+func (h *Handler) CreateRoles(c echo.Context) error {
+	roles, err := h.RiskModel.InsertRoles(c)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	log.Printf("rows afftected: %v\n", count)
 
 	return c.JSON(http.StatusCreated, roles)
 }
 
-func createApplications(c echo.Context) error {
-	var apps []Application
-	var count int64
-	if err := c.Bind(&apps); err != nil {
-		return err
+func (h *Handler) CreateApplications(c echo.Context) error {
+	apps, err := h.RiskModel.InsertApplications(c)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	sql := `INSERT INTO pasidb.application (app_id, app_name, role_id, is_critical, inserted_at, updated_at)
-    VALUES (?, ?, ?, ?, NOW(), NOW())`
-
-	for _, app := range apps {
-		inserted, _ := db.Exec(sql, app.AppId, app.AppName, app.RoleId, app.IsCritical)
-		rowsAffected, err := inserted.RowsAffected()
-		if err != nil {
-			return err
-		}
-		count += rowsAffected
-	}
-	log.Printf("rows afftected: %v\n", count)
 
 	return c.JSON(http.StatusCreated, apps)
 }
 
-func createDbAccesses(c echo.Context) error {
-	var dbaccesses []DBAccess
-	var count int64
-	if err := c.Bind(&dbaccesses); err != nil {
-		return err
+func (h *Handler) CreateDbAccesses(c echo.Context) error {
+	dbaccesses, err := h.RiskModel.InsertDbAccess(c)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	sql := "INSERT INTO pasidb.db_access (username, `table`, is_pii, inserted_at, updated_at) " +
-		"VALUES (?, ?, ?, NOW(), NOW())"
-
-	for _, dbaccess := range dbaccesses {
-		inserted, _ := db.Exec(sql, dbaccess.Username, dbaccess.Table, dbaccess.IsPII)
-		rowsAffected, err := inserted.RowsAffected()
-		if err != nil {
-			return err
-		}
-		count += rowsAffected
-	}
-	log.Printf("rows afftected: %v\n", count)
 
 	return c.JSON(http.StatusCreated, dbaccesses)
 }
 
-// business logic
-func getEmployeeRisk(c echo.Context) error {
-	var empRisk EmployeeRisk
-	sql := `SELECT username, employee_risk_code, employee_risk
-    FROM pasidb.employee_risk_view
-    WHERE username = ?`
-	row := db.QueryRow(sql, c.Param("username"))
-	if err := row.Scan(&empRisk.Username, &empRisk.EmployeeRiskCode, &empRisk.EmployeeRisk); err != nil {
-		return err
+func (h *Handler) UpdateEmployees(c echo.Context) error {
+	employees, err := h.RiskModel.UpdateEmployees(c)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(http.StatusCreated, employees)
+}
+
+func (h *Handler) GetEmployeeRisk(c echo.Context) error {
+	empRisk, err := h.RiskModel.FindByUsername(c.Param("username"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusNotFound, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, empRisk)
 }
 
-func getDepartmentRisk(c echo.Context) error {
-	var dpmtRisk DepartmentRisk
-	sql := `SELECT department_code, department, department_risk_code, department_risk
-    FROM pasidb.department_risk_view
-    WHERE department_code = ?`
-	row := db.QueryRow(sql, c.Param("departmentcode"))
-	if err := row.Scan(&dpmtRisk.DepartmentCode, &dpmtRisk.Department, &dpmtRisk.DepartmentRiskCode, &dpmtRisk.DepartmentRisk); err != nil {
-		return err
+func (h *Handler) GetDepartmentRisk(c echo.Context) error {
+	dpmtRisk, err := h.RiskModel.FindByDepartmentCode(c.Param("code"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusNotFound, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, dpmtRisk)

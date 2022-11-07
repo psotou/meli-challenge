@@ -16,8 +16,8 @@ services:
     networks:
       - melinet
 
-  server:
-    container_name: server
+  challenge-meli:
+    container_name: rest-server
     build:
       context: .
       target: deployer
