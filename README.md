@@ -11,7 +11,7 @@ Con este cambio y asegurándonos de estar parados en la raíz del proyecto corre
 ```bash
 make up
 ```
-Una vez levantada la aplicación podemos revisar que las tablas y vistas necesarias están disponibles en la BD, para ellos, primero abrimos otro instancia de la terminal y escribimos:
+Una vez levantada la aplicación podemos revisar que las tablas y vistas necesarias estén disponibles en la BD, para ello, primero abrimos otra instancia de la terminal y escribimos:
 
 ```bash
 make db
@@ -83,7 +83,7 @@ make seed-data
 
 Esto ejecutará POST requests a los endpoints de carga y de esta manera poblaremos la BD. Para asegurarnos de que la data esté cargada podemos ingresar a la BD y hacer un select sobre alguna de las tablas mencionadas arriba.
 
-Para probar las actualizaciones a empleados podemos correr el script que actualiza dos empleados (ver la data a actualziar en [esta ruta](scripts/sh-script/json-data/update-employee.json). El script es el siguiente: 
+Para probar las actualizaciones a empleados podemos correr el script que actualiza dos empleados (ver la data a actualizar en [esta ruta](scripts/sh-script/json-data/update-employee.json). El script es el siguiente: 
 
 ```bash
 cd scripts/sh-script/ && ./update-data.sh
@@ -132,7 +132,7 @@ Con esta información en mente agregamos los siguientes valores de riesgo asocia
 
 Como la columan `is_pii` es relevante, asignamos un punto a extra a cada valor, dado que tener accesos a una tabla con información personal es más riesgoso que la criticidad de una aplicación (o al menos esto lo tomé como supuesto).
 
-Luego, la segunda parte más relevantea a la hora de asignar el riesgo es el acceso de usarios a esquemas o tablas de la BD. En la información que cargamos, vemos que hay varios roles, los cuales homologamos y asignamos un puntaje de riesgo según el nivel de privilegios de cada rol. Los puntajes son:
+Luego, la segunda parte más relevante a la hora de asignar el riesgo es el acceso de usarios a esquemas o tablas de la BD. En la información que cargamos, vemos que hay varios roles, los cuales homologamos y asignamos un puntaje de riesgo según el nivel de privilegios de cada rol. Los puntajes son:
 
 | Rol | Rol homologado | puntaje riesgo rol | Columna generada |
 | :-- | :-- | :-- | :-- |
@@ -153,16 +153,16 @@ Con esto, tenemos que los puntajes de riesgo finales se calculan de la siguiente
 - **Riesgo empleado**: `max(sum(table_risk, app_risk, role_risk))`
 - **Riesgo departamento**: `max(sum(table_risk, app_risk))`
 
-Además, los empleados con estado `Inactive` tienen un riesgo de 0.
-
 Esto dado que el rol es intrínseco a un empleado, pero no a un departamento. 
 
-El calculo genera distintos rangos numéricos asociados al riesgo de empleados y departamentos. Donde el rango de los empleados es `[0, 7]` y el de los departamentos es `[0, 3]`. Con esto asignamos el riesgo asociado un rango de la siguiente manera:
+Nota: los empleados con estado `Inactive` tienen un riesgo de 0.
+
+El cálculo genera distintos rangos numéricos asociados al riesgo de empleados y departamentos. Donde el rango de los empleados es `[0, 7]` y el de los departamentos es `[0, 3]`. Con esto asignamos el riesgo asociado un rango de la siguiente manera:
 
 **Empleados**
 
 | Rango riesgo | Riesgo |
-| :-- | :-- | 
+| :--: | :--: | 
 | 0 | `no risk` |
 | [1, 2] | `low` |
 | [3, 4] | `mid` |
@@ -172,7 +172,7 @@ El calculo genera distintos rangos numéricos asociados al riesgo de empleados y
 **Departamentos**
 
 | Rango riesgo | Riesgo |
-| :-- | :-- | 
+| :--: | :--: | 
 | 0 | `no risk` |
 | 1 | `low` |
 | 2 | `mid` |
