@@ -1,0 +1,32 @@
+[
+  {
+    "id": 48747,
+    "full_name": "Julie Martin",
+    "div_code": 560,
+    "division": "UX",
+    "status": "Inactive",
+    "country_id": 12,
+    "country": "Argentina",
+    "department_code": 4132,
+    "department": "UX - WEB",
+    "date_in": "01/09/2021",
+    "date_out": "10/10/2022",
+    "username": "juliemartin",
+    "email": "juliemartin@challenge.com"
+  },
+  {
+    "id": 281005,
+    "full_name": "Andrea Mason",
+    "div_code": 432,
+    "division": "IT",
+    "status": "Inactive",
+    "country_id": 15,
+    "country": "Brazil",
+    "department_code": 24520,
+    "department": "INFRA",
+    "date_in": "13/01/2021",
+    "date_out": "12/10/2022",
+    "username": "andreamason",
+    "email": "andreamason@challenge.com"
+  }
+]

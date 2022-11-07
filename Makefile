@@ -4,9 +4,13 @@ down:
 	docker compose down
 volumes-down:
 	docker compose down -v
-bash:
-	docker compose exec mysqldb /bin/bash
 db:
 	docker compose exec mysqldb mysql -u root -p
+bash:
+	docker compose exec mysqldb /bin/bash
 logs:
 	docker compose logs
+tests:
+	go clean -testcache && go test -v ./...
+seed-data:
+	cd scripts/sh-script/ && ./post-data.sh

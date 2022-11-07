@@ -8,8 +8,8 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
     volumes:
-      - ./scripts:/docker-entrypoint-initdb.d
-      - ./cmd/seed/csv-data:/var/lib/mysql-files/seed
+      - ./scripts/sql-script:/docker-entrypoint-initdb.d
+      # - ./cmd/seed/csv-data:/var/lib/mysql-files/seed
       - mysql-data:/var/lib/mysql
     ports:
       - 3306:3306
