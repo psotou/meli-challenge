@@ -39,6 +39,7 @@ Tomando esto en cuenta se disponibilizan los siguientes endponts:
 | :-- | :-- |
 | POST | `/employee` |
 | PUT | `/employee/{path_parameter}` |
+| GET | `/employee/{path_parameter}` |
 | POST | `/role` |
 | POST | `/application` |
 | POST | `/dbaccess` |
@@ -84,3 +85,25 @@ Este request debería devolver un status code 201. Para ver si el dato se creó,
 
 En adelante voy  a trabajar sobre dos ramas; `main` que es donde pretendo tener el proyecto final, y `wip`, que es la rama con la data más actualizada dado que es ahí donde iré agregando y probando cosas.
 
+### UPDATES
+
+Se agrega la lógica de negocio, es decir, la generación de los índices de riesgo tanto para empleados como departamentos. Se han creado dos vistas para ellos, las que se pueden consultar directamente en la BD al levantar el servicio.
+
+Las vistas generadas son `employee_risk_view` y `department_risk_view`. Para consultarlas basta con correr lo siguiente dentro de la BD:
+
+```sql
+USE pasidb;
+SELECT * FROM employee_risk_view;
+SELECT * FROM department_risk_view:
+```
+
+Las decisiones para la ponderación de cada fuente de información se explicará prontamente.
+
+#### Pendientes
+
+Además de los dos objetivos restantes, hay algunos pendientes que iré agregando cuando ya tengo todo semi listo (espero).
+
+- [x] tests.
+- [x] agregar endpoints para carga masiva de empleados, roles, app y acceso a la BD.
+- [x] quita del scrip de inicialización de la BD la carga de datos desde archivos `.csv`.
+- [x] generación endpoints de consulta de riesgo por empleado y departamento.
