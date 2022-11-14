@@ -14,8 +14,6 @@ import (
 )
 
 func main() {
-	var err error
-
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
