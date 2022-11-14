@@ -13,7 +13,6 @@ type RiskModeler interface {
 	InsertApplications(echo.Context) ([]Application, error)
 	InsertDbAccess(echo.Context) ([]DBAccess, error)
 	UpdateEmployees(echo.Context) ([]Employee, error)
-
 	FindByUsername(string) (EmployeeRisk, error)
 	FindByDepartmentCode(string) (DepartmentRisk, error)
 }
@@ -80,7 +79,11 @@ func (rm *RiskModel) InsertEmployees(c echo.Context) ([]Employee, error) {
     VALUES (?, ?, ?, ?, ?, NOW(), NOW())`
 
 	for _, emp := range emps {
-		inserted, _ := rm.db.Exec(sql, emp.Status, emp.Department, emp.DepartmentCode, emp.DateIn, emp.Username)
+		inserted, err := rm.db.Exec(sql, emp.Status, emp.Department, emp.DepartmentCode, emp.DateIn, emp.Username)
+		if err != nil {
+			return []Employee{}, err
+		}
+
 		rowsAffected, err := inserted.RowsAffected()
 		if err != nil {
 			return []Employee{}, err
@@ -102,7 +105,10 @@ func (rm *RiskModel) InsertRoles(c echo.Context) ([]Role, error) {
     VALUES (?, ?, ?, NOW(), NOW())`
 
 	for _, role := range roles {
-		inserted, _ := rm.db.Exec(sql, role.RoleId, role.RoleName, role.Username)
+		inserted, err := rm.db.Exec(sql, role.RoleId, role.RoleName, role.Username)
+		if err != nil {
+			return []Role{}, err
+		}
 		rowsAffected, err := inserted.RowsAffected()
 		if err != nil {
 			return []Role{}, err
@@ -124,7 +130,10 @@ func (rm *RiskModel) InsertApplications(c echo.Context) ([]Application, error) {
     VALUES (?, ?, ?, ?, NOW(), NOW())`
 
 	for _, app := range apps {
-		inserted, _ := rm.db.Exec(sql, app.AppId, app.AppName, app.RoleId, app.IsCritical)
+		inserted, err := rm.db.Exec(sql, app.AppId, app.AppName, app.RoleId, app.IsCritical)
+		if err != nil {
+			return []Application{}, err
+		}
 		rowsAffected, err := inserted.RowsAffected()
 		if err != nil {
 			return []Application{}, err
@@ -146,7 +155,10 @@ func (rm *RiskModel) InsertDbAccess(c echo.Context) ([]DBAccess, error) {
 		"VALUES (?, ?, ?, NOW(), NOW())"
 
 	for _, dbaccess := range dbaccesses {
-		inserted, _ := rm.db.Exec(sql, dbaccess.Username, dbaccess.Table, dbaccess.IsPII)
+		inserted, err := rm.db.Exec(sql, dbaccess.Username, dbaccess.Table, dbaccess.IsPII)
+		if err != nil {
+			return []DBAccess{}, err
+		}
 		rowsAffected, err := inserted.RowsAffected()
 		if err != nil {
 			return []DBAccess{}, err
@@ -169,7 +181,10 @@ func (rm *RiskModel) UpdateEmployees(c echo.Context) ([]Employee, error) {
     WHERE username = ?`
 
 	for _, emp := range emps {
-		updated, _ := rm.db.Exec(sql, emp.Status, emp.DateOut, emp.Username)
+		updated, err := rm.db.Exec(sql, emp.Status, emp.DateOut, emp.Username)
+		if err != nil {
+			return []Employee{}, err
+		}
 		rowsAffected, err := updated.RowsAffected()
 		if err != nil {
 			return []Employee{}, err

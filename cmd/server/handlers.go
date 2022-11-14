@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 
+	"github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo/v4"
 )
 
@@ -17,7 +18,13 @@ func NewHandler(riskmodel RiskModeler) *Handler {
 func (h *Handler) CreateEmployees(c echo.Context) error {
 	employees, err := h.RiskModel.InsertEmployees(c)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		switch err.(type) {
+		case *echo.HTTPError:
+			return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		default:
+			// the default case handles all db related errors
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
 	}
 
 	return c.JSON(http.StatusCreated, employees)
@@ -26,7 +33,13 @@ func (h *Handler) CreateEmployees(c echo.Context) error {
 func (h *Handler) CreateRoles(c echo.Context) error {
 	roles, err := h.RiskModel.InsertRoles(c)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		switch err.(type) {
+		case *echo.HTTPError:
+			return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		default:
+			// the default case handles all db related errors
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
 	}
 
 	return c.JSON(http.StatusCreated, roles)
@@ -35,7 +48,13 @@ func (h *Handler) CreateRoles(c echo.Context) error {
 func (h *Handler) CreateApplications(c echo.Context) error {
 	apps, err := h.RiskModel.InsertApplications(c)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		switch err.(type) {
+		case *echo.HTTPError:
+			return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		default:
+			// the default case handles all db related errors
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
 	}
 
 	return c.JSON(http.StatusCreated, apps)
@@ -44,7 +63,13 @@ func (h *Handler) CreateApplications(c echo.Context) error {
 func (h *Handler) CreateDbAccesses(c echo.Context) error {
 	dbaccesses, err := h.RiskModel.InsertDbAccess(c)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		switch err.(type) {
+		case *echo.HTTPError:
+			return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		default:
+			// the default case handles all db related errors
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
 	}
 
 	return c.JSON(http.StatusCreated, dbaccesses)
@@ -53,7 +78,14 @@ func (h *Handler) CreateDbAccesses(c echo.Context) error {
 func (h *Handler) UpdateEmployees(c echo.Context) error {
 	employees, err := h.RiskModel.UpdateEmployees(c)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		switch err.(type) {
+		case *echo.HTTPError:
+			return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		case *mysql.MySQLError:
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		default:
+			return echo.NewHTTPError(http.StatusConflict, err.Error())
+		}
 	}
 
 	return c.JSON(http.StatusCreated, employees)
