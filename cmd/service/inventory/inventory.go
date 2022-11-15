@@ -1,22 +1,23 @@
-package main
+package inventory
 
 import (
 	"net/http"
+	"personal/risk-calculator/cmd/domain/employee"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo/v4"
 )
 
-type Handler struct {
-	RiskModel RiskModeler
+type handler struct {
+	inventory employee.EmployeeRepository
 }
 
-func NewHandler(riskmodel RiskModeler) *Handler {
-	return &Handler{riskmodel}
+func NewHandler(inventory employee.EmployeeRepository) *handler {
+	return &handler{inventory: inventory}
 }
 
-func (h *Handler) CreateEmployees(c echo.Context) error {
-	employees, err := h.RiskModel.InsertEmployees(c)
+func (h *handler) CreateEmployees(c echo.Context) error {
+	employees, err := h.inventory.InsertEmployees(c)
 	if err != nil {
 		switch err.(type) {
 		case *echo.HTTPError:
@@ -30,8 +31,8 @@ func (h *Handler) CreateEmployees(c echo.Context) error {
 	return c.JSON(http.StatusCreated, employees)
 }
 
-func (h *Handler) CreateRoles(c echo.Context) error {
-	roles, err := h.RiskModel.InsertRoles(c)
+func (h *handler) CreateRoles(c echo.Context) error {
+	roles, err := h.inventory.InsertRoles(c)
 	if err != nil {
 		switch err.(type) {
 		case *echo.HTTPError:
@@ -45,8 +46,8 @@ func (h *Handler) CreateRoles(c echo.Context) error {
 	return c.JSON(http.StatusCreated, roles)
 }
 
-func (h *Handler) CreateApplications(c echo.Context) error {
-	apps, err := h.RiskModel.InsertApplications(c)
+func (h *handler) CreateApplications(c echo.Context) error {
+	apps, err := h.inventory.InsertApplications(c)
 	if err != nil {
 		switch err.(type) {
 		case *echo.HTTPError:
@@ -60,8 +61,8 @@ func (h *Handler) CreateApplications(c echo.Context) error {
 	return c.JSON(http.StatusCreated, apps)
 }
 
-func (h *Handler) CreateDbAccesses(c echo.Context) error {
-	dbaccesses, err := h.RiskModel.InsertDbAccess(c)
+func (h *handler) CreateDbAccesses(c echo.Context) error {
+	dbaccesses, err := h.inventory.InsertDbAccess(c)
 	if err != nil {
 		switch err.(type) {
 		case *echo.HTTPError:
@@ -75,8 +76,8 @@ func (h *Handler) CreateDbAccesses(c echo.Context) error {
 	return c.JSON(http.StatusCreated, dbaccesses)
 }
 
-func (h *Handler) UpdateEmployees(c echo.Context) error {
-	employees, err := h.RiskModel.UpdateEmployees(c)
+func (h *handler) UpdateEmployees(c echo.Context) error {
+	employees, err := h.inventory.UpdateEmployees(c)
 	if err != nil {
 		switch err.(type) {
 		case *echo.HTTPError:
@@ -89,22 +90,4 @@ func (h *Handler) UpdateEmployees(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusCreated, employees)
-}
-
-func (h *Handler) GetEmployeeRisk(c echo.Context) error {
-	empRisk, err := h.RiskModel.FindByUsername(c.Param("username"))
-	if err != nil {
-		return echo.NewHTTPError(http.StatusNotFound, err.Error())
-	}
-
-	return c.JSON(http.StatusOK, empRisk)
-}
-
-func (h *Handler) GetDepartmentRisk(c echo.Context) error {
-	dpmtRisk, err := h.RiskModel.FindByDepartmentCode(c.Param("code"))
-	if err != nil {
-		return echo.NewHTTPError(http.StatusNotFound, err.Error())
-	}
-
-	return c.JSON(http.StatusOK, dpmtRisk)
 }

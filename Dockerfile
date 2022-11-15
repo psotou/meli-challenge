@@ -10,8 +10,7 @@ RUN go mod download
 
 COPY . .
 
-# RUN go build -o /challenge-meli
-RUN go build -o /challenge-meli ./cmd/server/
+RUN go build -o /challenge-meli ./cmd/
 
 ## Deploy
 FROM gcr.io/distroless/base-debian10 AS deployer
