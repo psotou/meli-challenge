@@ -2,7 +2,7 @@ package riskindex
 
 import (
 	"net/http"
-	"personal/risk-calculator/cmd/domain/risk"
+	"personal/risk-calculator/domain/risk"
 
 	"github.com/labstack/echo/v4"
 )

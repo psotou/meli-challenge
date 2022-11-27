@@ -2,7 +2,7 @@ package inventory
 
 import (
 	"net/http"
-	"personal/risk-calculator/cmd/domain/employee"
+	"personal/risk-calculator/domain/employee"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo/v4"

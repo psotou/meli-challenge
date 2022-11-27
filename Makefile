@@ -11,6 +11,6 @@ bash:
 logs:
 	docker compose logs
 tests:
-	go clean -testcache && go test -v ./...
+	go clean -testcache && go test -v -cover ./...
 seed-data:
 	cd scripts/sh-script/ && ./post-data.sh

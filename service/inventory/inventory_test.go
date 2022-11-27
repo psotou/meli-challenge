@@ -1,10 +1,10 @@
-package employee_test
+package inventory_test
 
 import (
 	"net/http"
 	"net/http/httptest"
-	"personal/risk-calculator/cmd/domain/employee"
-	"personal/risk-calculator/cmd/service/inventory"
+	"personal/risk-calculator/domain/employee"
+	"personal/risk-calculator/service/inventory"
 	"testing"
 
 	"github.com/labstack/echo/v4"
@@ -73,7 +73,7 @@ func (ep *EmployeePersistenceStub) UpdateEmployees(c echo.Context) ([]employee.E
 	}, nil
 }
 
-func TestEmployeeInventory(t *testing.T) {
+func TestCreateEmployees(t *testing.T) {
 	t.Run("should persist employee related data", func(t *testing.T) {
 		e := echo.New()
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
@@ -91,7 +91,9 @@ func TestEmployeeInventory(t *testing.T) {
 			assert.Equal(t, expectedEmployees, rec.Body.String())
 		}
 	})
+}
 
+func TestCreteRoles(t *testing.T) {
 	t.Run("should persist role related data", func(t *testing.T) {
 		e := echo.New()
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
@@ -109,7 +111,9 @@ func TestEmployeeInventory(t *testing.T) {
 			assert.Equal(t, expectedRoles, rec.Body.String())
 		}
 	})
+}
 
+func TestCreateApplications(t *testing.T) {
 	t.Run("should persist application related data", func(t *testing.T) {
 		e := echo.New()
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
@@ -127,7 +131,9 @@ func TestEmployeeInventory(t *testing.T) {
 			assert.Equal(t, expectedApps, rec.Body.String())
 		}
 	})
+}
 
+func TestCreateDbAccesses(t *testing.T) {
 	t.Run("should persist db access data", func(t *testing.T) {
 		e := echo.New()
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
@@ -145,7 +151,9 @@ func TestEmployeeInventory(t *testing.T) {
 			assert.Equal(t, expectedDbAccesses, rec.Body.String())
 		}
 	})
+}
 
+func TestUpdateEmployees(t *testing.T) {
 	t.Run("should update employee related data", func(t *testing.T) {
 		e := echo.New()
 		req := httptest.NewRequest(http.MethodGet, "/", nil)

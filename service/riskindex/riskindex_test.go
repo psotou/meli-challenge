@@ -1,10 +1,10 @@
-package risk_test
+package riskindex_test
 
 import (
 	"net/http"
 	"net/http/httptest"
-	"personal/risk-calculator/cmd/domain/risk"
-	"personal/risk-calculator/cmd/service/riskindex"
+	"personal/risk-calculator/domain/risk"
+	"personal/risk-calculator/service/riskindex"
 	"testing"
 
 	"github.com/labstack/echo/v4"
@@ -31,7 +31,7 @@ func (rp *RiskPersistenceStub) FindByDepartmentCode(code string) (risk.Departmen
 	}, nil
 }
 
-func TestGetRiskIndex(t *testing.T) {
+func TestGetEmployeeRisk(t *testing.T) {
 	t.Run("should return the risk index of an employee", func(t *testing.T) {
 		e := echo.New()
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
@@ -51,7 +51,9 @@ func TestGetRiskIndex(t *testing.T) {
 			assert.Equal(t, expectedEmployeeRisk, rec.Body.String())
 		}
 	})
+}
 
+func TestGetDepartmentRisk(t *testing.T) {
 	t.Run("should return the risk index of a department", func(t *testing.T) {
 		e := echo.New()
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
